@@ -1,3 +1,4 @@
+student_count = 11
 # This puts the student roster on individual lines
 puts "The students of the Villains Academy"
 puts "-------------"
@@ -15,6 +16,4 @@ puts "Norman Bates"
 
 # This print statement states how many students
 # there are at the school. Output is one line.
-print "Overall, we have "
-print 11
-print " great students"
+print "Overall, we have #{student_count} great students"
