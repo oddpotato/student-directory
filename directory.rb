@@ -15,23 +15,23 @@
 # ]
 
 def print_header
-    puts "The students of Villain's Academy"
-    puts "--------------"
+    puts "The students of Villain's Academy".center(40)
+    puts "--------------".center(40)
 end
 
 def print_footer(names)
-    puts "Overall, we have #{names.count} great students"
+    puts "Overall, we have #{names.count} great students".center(40)
 end
 
 def print(students)
     students.each.with_index(1) do |student, index|
-        puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+        puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(40)
     end
 end
 
 def input_students
-    puts "Please enter the names of the students"
-    puts "To finish, just hit return twice"
+    puts "Please enter the names of the students".center(40)
+    puts "To finish, just hit return twice".center(40)
     # create an empty array
     students = []
     # get the first name
@@ -39,7 +39,7 @@ def input_students
     while !name.empty? do
         # add the students hash to the array
         students << {name: name, cohort: :november, hobbies: :swimming, country: :USA}
-        puts "Now we have #{students.count} students"
+        puts "Now we have #{students.count} students".center(40)
         # get another name from the user
         name = gets.chomp
     end
