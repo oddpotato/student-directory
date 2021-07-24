@@ -16,9 +16,9 @@ def print(students)
   end
   unique_cohort.each do |cohort|
     puts "Students in the #{cohort} cohort"
-    students.each.with_index(1) do |person, index|
+    students.each do |person|
       if person[:cohort] == cohort
-        puts "#{person[:name]}"
+        puts "#{person[:name]}}"
       end
     end
   end
@@ -28,10 +28,10 @@ def input_students
   students = []
   # take a student name
   puts "Please enter a student's name".center(40)
-  name = gets.chomp()
+  name = gets.chop
   # take a student cohort
   puts "Please enter the student's cohort".center(40)
-  cohort = gets.chomp()
+  cohort = gets.strip
   puts "When you are finished, please press 'Enter' 3 times".center(40)
   # This is what stops the input
   until name.empty? && cohort.empty? do
