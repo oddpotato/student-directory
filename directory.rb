@@ -14,13 +14,16 @@ def print(students)
   unique_cohort.append(student[:cohort])
   unique_cohort.uniq!
   end
-  unique_cohort.each do |cohort|
-    puts "Students in the #{cohort} cohort"
-    students.each do |person|
-      if person[:cohort] == cohort
-        puts "#{person[:name]}}"
+  if unique_cohort.length > 0
+    unique_cohort.each do |cohort|
+      puts "Students in the #{cohort} cohort"
+      students.each do |person|
+        if person[:cohort] == cohort
+          puts "#{person[:name]}}"
+        end
       end
     end
+  else puts "Nothing to see here, chief"
   end
 end 
 
