@@ -1,42 +1,18 @@
-# student_count = 11
-# This puts the student roster on individual lines
-# students = [ 
-# { name: "Dr Hannibal Lecter", cohort: :november},
-# { name: "Darth Vader", cohort: :november},
-# { name: "Nurse Ratched", cohort: :november},
-# { name: "Michael Corleone", cohort: :november},
-# { name: "Alex DeLarge", cohort: :november},
-# { name: "The Wicked Witch of the West", cohort: :november},
-# { name: "Terminator", cohort: :november},
-# { name: "Freddy Krueger", cohort: :november},
-# { name: "The Joker", cohort: :november},
-# { name: "Joffrey Baratheon", cohort: :november},
-# { name: "Norman Bates", cohort: :november}
-# ]
-
-# student_count = 11
-# This puts the student roster on individual lines
-# students = [ 
-# { name: "Dr Hannibal Lecter", cohort: :november},
-# { name: "Darth Vader", cohort: :november},
-# { name: "Nurse Ratched", cohort: :november},
-# { name: "Michael Corleone", cohort: :november},
-# { name: "Alex DeLarge", cohort: :november},
-# { name: "The Wicked Witch of the West", cohort: :november},
-# { name: "Terminator", cohort: :november},
-# { name: "Freddy Krueger", cohort: :november},
-# { name: "The Joker", cohort: :november},
-# { name: "Joffrey Baratheon", cohort: :november},
-# { name: "Norman Bates", cohort: :november}
-# ]
 
 def print_header
     puts "The students of Villain's Academy".center(40)
     puts "--------------".center(40)
 end
 
-def print_footer(names)
-    puts "Overall, we have #{names.count} great students".center(40)
+def print_footer(students)
+    puts "Overall, we have #{students.count} great students".center(40)
+    puts "Would you like to change anything? (Y/N)".center(40)
+    change = gets.chomp()
+    if change == "Y"
+      getting_hash(students)
+    else
+      puts "Have a good day!".center(40)
+    end
 end
 
 def print(students)
@@ -44,6 +20,28 @@ def print(students)
         puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(40)
     end
 end
+
+def getting_hash(students)
+puts "Which entry would you like to change?".center(40)
+entry = gets.chomp()
+puts "Attempt to access which key?".center(40)
+key = gets.chomp()
+puts "Please enter the new value".center(40)
+value = gets.chomp()
+  students.each.with_index(1) do |sub_hash, index|
+  if index == entry.to_i
+    sub_hash.each do |k, v|
+      if k == key.to_sym
+        v.gsub!(v,value)
+      end 
+    end
+  end
+  end
+  print(students)
+  print_footer(students)
+end
+
+
 
 def input_students
   students = []
@@ -53,9 +51,9 @@ def input_students
   # take a student cohort
   puts "Please enter the student's cohort".center(40)
   cohort = gets.chomp()
-  puts "When you are finished, please type 'stop'"
+  puts "When you are finished, please press 'Enter' 3 times".center(40)
   # This is what stops the input
-  until (name == "stop") || (cohort == "stop") do
+  until name.empty? && cohort.empty? do
   # This is appending the default value is they don't insert name or cohort
     if cohort.empty?
       students << {name: name, cohort: :november, hobbies: :swimming, country: :USA}
@@ -73,7 +71,7 @@ def input_students
   puts "Please enter another cohort".center(40)
   cohort = gets.chomp
   end
-    if (name == "stop") || (cohort == "stop") 
+    if name.empty? && cohort.empty?
       students
     end
   end
