@@ -6,42 +6,23 @@ end
 
 def print_footer(students)
     puts "Overall, we have #{students.count} great students".center(40)
-    puts "Would you like to change anything? (Y/N)".center(40)
-    change = gets.chomp()
-    if change == "Y"
-      getting_hash(students)
-    else
-      puts "Have a good day!".center(40)
-    end
 end
 
 def print(students)
-    students.each.with_index(1) do |student, index|
-        puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(40)
-    end
-end
-
-def getting_hash(students)
-puts "Which entry would you like to change?".center(40)
-entry = gets.chomp()
-puts "Attempt to access which key?".center(40)
-key = gets.chomp()
-puts "Please enter the new value".center(40)
-value = gets.chomp()
-  students.each.with_index(1) do |sub_hash, index|
-  if index == entry.to_i
-    sub_hash.each do |k, v|
-      if k == key.to_sym
-        v.gsub!(v,value)
-      end 
+  unique_cohort = []
+  students.each do |student|
+  unique_cohort.append(student[:cohort])
+  unique_cohort.uniq!
+  end
+  unique_cohort.each do |cohort|
+    puts "Students in the #{cohort} cohort"
+    students.each.with_index(1) do |person, index|
+      if person[:cohort] == cohort
+        puts "#{person[:name]}"
+      end
     end
   end
-  end
-  print(students)
-  print_footer(students)
-end
-
-
+end 
 
 def input_students
   students = []
