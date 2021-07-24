@@ -11,6 +11,7 @@ def print_menu
   puts "1. Input the Students"
   puts "2. Show the Students"
   puts "3. Update an Entry"
+  puts "4. Save File to .csv"
   puts "9. Exit"
 end
 
@@ -22,17 +23,23 @@ def process(selection)
       show_students
     when "3"
        updating_entry
+    when "4"
+      save_students
     when "9"
       exit
     else 
-      puts "I don't understand. Try again."
+      puts "I don't understand. Please try again."
     end
 end
 
 def show_students
-  print_header
-  print_student_list
-  print_footer
+  if @students.length > 0
+    print_header
+    print_student_list
+    print_footer
+  else puts "Nothing to see here chief. Consider inputting students."
+    interactive_menu
+  end
 end
 
 def print_header
@@ -45,15 +52,15 @@ def print_footer
 end
 
 def print_student_list
-    @students.each.with_index(1) do |student, index|
-        puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(40)
-    end
+  @students.each.with_index(1) do |student, index|
+    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)".center(40)
+  end
 end
 
 def updating_entry
 puts "Which entry would you like to change?".center(40)
 entry = gets.chomp()
-puts "Attempt to access which key?".center(40)
+puts "Would you like to change the name or cohort?".center(40)
 key = gets.chomp()
 puts "Please enter the new value".center(40)
 value = gets.chomp()
@@ -76,15 +83,15 @@ def input_students
   # take a student cohort
   puts "Please enter the student's cohort".center(40)
   cohort = gets.chomp()
-  puts "When you are finished, please press 'Enter' 3 times".center(40)
+  puts "When you are finished, please press 'Enter' until the menu appears".center(40)
   # This is what stops the input
   until name.empty? && cohort.empty? do
   # This is appending the default value is they don't insert name or cohort
     if cohort.empty?
-      @students << {name: name, cohort: 'november', hobbies: :swimming, country: :USA}
+      @students << {name: name, cohort: 'november'}
     elsif name.empty?
-      @students << {name: 'Apples', cohort: cohort, hobbies: :swimming, country: :USA}
-    else @students << {name: name, cohort: cohort, hobbies: :swimming, country: :USA}
+      @students << {name: 'Apples', cohort: cohort}
+    else @students << {name: name, cohort: cohort}
     end
   # This is printing depending on what's up
     if @students.count == 1  
@@ -99,10 +106,15 @@ def input_students
   @students
   end
 
-# This print statement states how many students
-#students = input_students
-#print_header
-#print(students)
-#print_footer(students)
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    student_data = [student[:name]], [student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+  puts "File Successfully Saved"
+end
 
 interactive_menu
