@@ -11,7 +11,8 @@ def print_menu
   puts "1. Input the Students"
   puts "2. Show the Students"
   puts "3. Update an Entry"
-  puts "4. Save File to .csv"
+  puts "4. Save File to students.csv"
+  puts "5. Load the list from students.csv"
   puts "9. Exit"
 end
 
@@ -25,6 +26,8 @@ def process(selection)
        updating_entry
     when "4"
       save_students
+    when "5"
+      load_students
     when "9"
       exit
     else 
@@ -115,6 +118,24 @@ def save_students
   end
   file.close
   puts "File Successfully Saved"
+end
+
+# -----------
+# A note about cohorts:
+# As the exercise says, cohort here is a 
+# string for consistencies sake
+# 'What to do if someone made a typo'
+# Hasn't been called since E8Q7
+# But it was a valid point
+# -----------
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    @students << {name:name, cohort: cohort}
+  end
+  file.close
 end
 
 interactive_menu
