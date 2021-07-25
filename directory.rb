@@ -91,12 +91,7 @@ def input_students
   # This is what stops the input
   until name.empty? && cohort.empty? do
   # This is appending the default value is they don't insert name or cohort
-    if cohort.empty?
-      @students << {name: name, cohort: 'november'}
-    elsif name.empty?
-      @students << {name: 'Apples', cohort: cohort}
-    else @students << {name: name, cohort: cohort}
-    end
+    append_data(name,cohort)
   # This is printing depending on what's up
     if @students.count == 1  
       puts "Now we have 1 student".center(40)
@@ -109,6 +104,10 @@ def input_students
   end
   @students
   end
+
+def append_data(name, cohort)
+    @students << {name: name, cohort: cohort}
+end
 
 def choose_file(input)
   puts "Please choose a filename"
@@ -153,7 +152,8 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name:name, cohort: cohort}
+    append_data(name,cohort)
+    #@students << {name:name, cohort: cohort}
   end
   puts "Loaded #{@students.count} from #{filename}"
   file.close
@@ -164,7 +164,6 @@ def try_load_students
   if File.exists?(filename)
     load_students(filename)
   else
-    puts "Sorry, #{filename} doesn't exist"
     exit
   end
 end

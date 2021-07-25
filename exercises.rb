@@ -91,12 +91,7 @@ def input_students
   # This is what stops the input
   until name.empty? && cohort.empty? do
   # This is appending the default value is they don't insert name or cohort
-    if cohort.empty?
-      @students << {name: name, cohort: 'november'}
-    elsif name.empty?
-      @students << {name: 'Apples', cohort: cohort}
-    else @students << {name: name, cohort: cohort}
-    end
+    append_data(name,cohort)
   # This is printing depending on what's up
     if @students.count == 1  
       puts "Now we have 1 student".center(40)
@@ -109,6 +104,10 @@ def input_students
   end
   @students
   end
+
+def append_data(name, cohort)
+    @students << {name: name, cohort: cohort}
+end
 
 def choose_file(input)
   puts "Please choose a filename"
@@ -128,19 +127,6 @@ def choose_file(input)
     end
   end
 end
-
-
-#def save_students
-#    # open the file for writing
-#    file = File.open("students.csv", "w")
-#    # iterate over the array of students
-#    @students.each do |student|
-#      student_data = [student[:name], student[:cohort]]
-#      csv_line = student_data.join(",")
-#      file.puts csv_line
-#    end
-#    file.close
-#  end
 
  def save_students(filename = "students.csv")
    file = File.open(filename, "w")
@@ -166,7 +152,8 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name:name, cohort: cohort}
+    append_data(name,cohort)
+    #@students << {name:name, cohort: cohort}
   end
   puts "Loaded #{@students.count} from #{filename}"
   file.close
@@ -174,20 +161,12 @@ end
 
 def try_load_students  
   filename = ARGV.first || filename = "students.csv"
-#  return if filename.nil?
-#  if filename.nil?
-#    filename = "students.csv"
-#  end
   if File.exists?(filename)
     load_students(filename)
-#    puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} doesn't exist"
     exit
   end
 end
-#
-# try_load_students
-#load_students
+
 try_load_students
 interactive_menu
