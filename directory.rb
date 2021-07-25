@@ -1,4 +1,5 @@
 @students = []
+@filename = "students.csv"
 
 def interactive_menu
   loop do
@@ -25,13 +26,9 @@ def process(selection)
     when "3"
        updating_entry
     when "4"
-      puts "Which filename would you like?"
-      filename = STDIN.gets.chomp()
-      save_students(filename)
+      choose_file("save")
     when "5"
-      puts "Which file would you like to load?"
-      filename = STDIN.gets.chomp()
-      load_students(filename)
+      choose_file("open")
     when "9"
       exit
     else 
@@ -113,16 +110,35 @@ def input_students
   @students
   end
 
-def save_students(filename = "students.csv")
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student_data = [student[:name]], [student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+def choose_file(input)
+  puts "Please choose a filename"
+  puts "For 'students.csv', please press 'Enter'"
+  filename = STDIN.gets.chomp()
+  if input == "open"
+    if !filename.empty?
+      load_students(filename)
+    else 
+      load_students()
+    end
+  elsif input == "save"
+    if !filename.empty?
+      save_students(filename)
+    else 
+      save_students()
+    end
   end
-  file.close
-  puts "File Successfully Saved"
 end
+
+ def save_students(filename = "students.csv")
+   file = File.open(filename, "w")
+   @students.each do |student|
+     student_data = [student[:name]], [student[:cohort]]
+     csv_line = student_data.join(",")
+     file.puts csv_line
+   end
+   file.close
+   puts "File Successfully Saved"
+ end
 
 # -----------
 # A note about cohorts:
@@ -139,22 +155,19 @@ def load_students(filename = "students.csv")
     name, cohort = line.chomp.split(',')
     @students << {name:name, cohort: cohort}
   end
+  puts "Loaded #{@students.count} from #{filename}"
   file.close
 end
 
-#def try_load_students
-#  filename = ARGV.first
-#  return if filename.nil?
-#  if File.exists?(filename)
-#    load_students(filename)
-#    puts "Loaded #{@students.count} from #{filename}"
-#  else
-#    puts "Sorry, #{filename} doesn't exist"
-#    exit
-#  end
-# end
-#
-#try_load_students
-#load_students
+def try_load_students  
+  filename = ARGV.first || filename = "students.csv"
+  if File.exists?(filename)
+    load_students(filename)
+  else
+    puts "Sorry, #{filename} doesn't exist"
+    exit
+  end
+end
 
+try_load_students
 interactive_menu
