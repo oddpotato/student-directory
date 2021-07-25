@@ -1,4 +1,5 @@
 @students = []
+@filename = "students.csv"
 
 def interactive_menu
   loop do
@@ -11,8 +12,8 @@ def print_menu
   puts "1. Input the Students"
   puts "2. Show the Students"
   puts "3. Update an Entry"
-  puts "4. Save File to students.csv"
-  puts "5. Load the list from students.csv"
+  puts "4. Save File"
+  puts "5. Load A Previous List"
   puts "9. Exit"
 end
 
@@ -25,9 +26,9 @@ def process(selection)
     when "3"
        updating_entry
     when "4"
-      save_students
+      choose_file("save")
     when "5"
-      load_students
+      choose_file("open")
     when "9"
       exit
     else 
@@ -109,16 +110,48 @@ def input_students
   @students
   end
 
-def save_students
-  file = File.open("students.csv", "w")
-  @students.each do |student|
-    student_data = [student[:name]], [student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+def choose_file(input)
+  puts "Please choose a filename"
+  puts "For 'students.csv', please press 'Enter'"
+  filename = STDIN.gets.chomp()
+  if input == "open"
+    if !filename.empty?
+      load_students(filename)
+    else 
+      load_students()
+    end
+  elsif input == "save"
+    if !filename.empty?
+      save_students(filename)
+    else 
+      save_students()
+    end
   end
-  file.close
-  puts "File Successfully Saved"
 end
+
+
+#def save_students
+#    # open the file for writing
+#    file = File.open("students.csv", "w")
+#    # iterate over the array of students
+#    @students.each do |student|
+#      student_data = [student[:name], student[:cohort]]
+#      csv_line = student_data.join(",")
+#      file.puts csv_line
+#    end
+#    file.close
+#  end
+
+ def save_students(filename = "students.csv")
+   file = File.open(filename, "w")
+   @students.each do |student|
+     student_data = [student[:name]], [student[:cohort]]
+     csv_line = student_data.join(",")
+     file.puts csv_line
+   end
+   file.close
+   puts "File Successfully Saved"
+ end
 
 # -----------
 # A note about cohorts:
@@ -138,17 +171,19 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry, #{filename} doesn't exist"
-    exit
-  end
-end
+#def try_load_students
+#  filename = ARGV.first
+#  return if filename.nil?
+#  if File.exists?(filename)
+#    load_students(filename)
+#    puts "Loaded #{@students.count} from #{filename}"
+#  else
+#    puts "Sorry, #{filename} doesn't exist"
+#    exit
+#  end
+# aend
+#
+#try_load_students
+#load_students
 
-try_load_students
 interactive_menu
